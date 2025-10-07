@@ -1191,6 +1191,7 @@ class Cobotta_Pro_CON:
             next_tool_id = self.pose[17]
             if next_tool_id != 0:
                 try:
+                    self.logger.info(f"Tool change to: {next_tool_id}")
                     self.tool_change(next_tool_id)
                     self.pose[18] = 1
                 except Exception as e:
