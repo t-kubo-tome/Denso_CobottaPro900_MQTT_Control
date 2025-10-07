@@ -857,9 +857,7 @@ class Cobotta_Pro_CON:
             try:
                 # 制御ループ
                 # 停止するのは、ユーザーが要求した場合か、自然に内部エラーが発生した場合
-                self.enter_servo_mode()
                 self.control_loop()
-                self.leave_servo_mode()
                 # ここまで正常に終了した場合、ユーザーが要求した場合が成功を意味する
                 if self.pose[16] == 1:
                     self.pose[16] = 0
