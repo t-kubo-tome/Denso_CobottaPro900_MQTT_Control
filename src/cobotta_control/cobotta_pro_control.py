@@ -293,6 +293,7 @@ class Cobotta_Pro_CON:
 
     def control_loop(self, f: TextIO | None = None) -> bool:
         """リアルタイム制御ループ"""
+        self.enter_servo_mode()
         self.last = 0
         self.logger.info("Start Control Loop")
         # 状態値が最新の値になるようにする
@@ -751,7 +752,10 @@ class Cobotta_Pro_CON:
                 
             self.last_control = control
             self.last = now
-        
+ 
+        # スレーブモード解除可能な状態になったら即時に解除しないと指令値生成遅延になる
+        self.leave_servo_mode()       
+ 
         hand_thread.join()
         if error_event.is_set():
             # TODO: これで例外発生元のスタックトレースが取得できればこれで十分
