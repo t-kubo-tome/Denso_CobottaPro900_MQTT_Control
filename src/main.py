@@ -540,6 +540,7 @@ class MQTTWin:
         self.log_monitor.tag_config("ERROR", foreground="red")
         self.update_monitor()
         self.start_update_gui_log()
+        self.update_button_states_from_mqtt_control()
 
     def get_logging_dir(self):
         now = datetime.datetime.now()
@@ -754,6 +755,42 @@ class MQTTWin:
         self.update_gui_log_thread = threading.Thread(
             target=self.update_gui_log, daemon=True)
         self.update_gui_log_thread.start()
+
+    def update_button_states_from_mqtt_control(self):
+        # MQTT制御に入れる状態にならなければチェックしない
+        if not self.pm.state_control or not self.pm.state_monitor:
+            self.root.after(100, self.update_button_states_from_mqtt_control)
+        # MQTT制御に入れる状態であれば、MQTT制御状態に応じてボタンの有効無効を切り替える
+        last_state_mqtt_control = getattr(
+            self, "last_state_mqtt_control", False)
+        state_mqtt_control = self.pm.state_mqtt_control
+        # 前回の状態と異なる場合のみ切り替えて負荷を下げる
+        if state_mqtt_control != last_state_mqtt_control:
+            kind1 = "disabled" if state_mqtt_control else "normal"
+            kind2 = "normal" if state_mqtt_control else "disabled"
+            self.button_StartMQTTControl.config(state=kind1)
+            self.button_StopMQTTControl.config(state=kind2)
+            self.button_ClearError.config(state=kind1)
+            self.button_SetAreaEnabled.config(state=kind1)
+            self.button_DisableRobot.config(state=kind1)
+            self.button_EnableRobot.config(state=kind1)
+            self.button_ReleaseHand.config(state=kind1)
+            self.button_TidyPose.config(state=kind1)
+            self.button_ToolChange.config(state=kind1)
+            self.button_ChangeLogFile.config(state=kind1)
+            self.button_DemoPutDownBox.config(state=kind1)
+            self.button_LineCut.config(state=kind1)
+            for joint in self.joint_jog_buttons:
+                self.joint_jog_buttons[joint]["minus"].config(state=kind1)
+                self.joint_jog_buttons[joint]["plus"].config(state=kind1)
+            for tcp in self.tcp_jog_buttons:
+                self.tcp_jog_buttons[tcp]["minus"].config(state=kind1)
+                self.tcp_jog_buttons[tcp]["plus"].config(state=kind1)
+            if self.pm.state_recv_mqtt:
+                self.button_StartMQTTControl.config(state=kind1)
+                self.button_StopMQTTControl.config(state=kind1)
+            self.last_state_mqtt_control = state_mqtt_control
+        self.root.after(100, self.update_button_states_from_mqtt_control)
 
     def update_monitor(self):
         # モニタープロセスからの情報

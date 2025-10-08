@@ -401,8 +401,12 @@ class ProcessManager:
 
     def stop_mqtt_control(self):
         # mqtt_control中のみシグナルを出す
-        if self.ar[15] == 1:
+        if self.state_mqtt_control:
             self.ar[16] = 1
+
+    @property
+    def state_mqtt_control(self):
+        return self.ar[15] == 1
 
     def tool_change(self, tool_id: int):
         self.ar[17] = tool_id
