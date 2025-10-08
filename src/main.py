@@ -137,30 +137,26 @@ class MQTTWin:
             self.root.grid_columnconfigure(col, weight=1, uniform="equal")
         
         row = 0
-        self.button_ConnectRobot = \
-            tk.Button(self.root, text="ConnectRobot", padx=5,
+        self.button = {}
+        self.button["ConnectRobot"] = tk.Button(self.root, text="ConnectRobot", padx=5,
                       command=self.ConnectRobot, state="normal")
-        self.button_ConnectRobot.grid(row=row,column=0,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["ConnectRobot"].grid(row=row,column=0,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_ConnectMQTT = \
-            tk.Button(self.root, text="ConnectMQTT", padx=5,
+        self.button["ConnectMQTT"] = tk.Button(self.root, text="ConnectMQTT", padx=5,
                              command=self.ConnectMQTT, state="normal")
-        self.button_ConnectMQTT.grid(row=row,column=2,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["ConnectMQTT"].grid(row=row,column=2,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_DemoPutDownBox = \
-            tk.Button(self.root, text="DemoPutDownBox", padx=5,
+        self.button["DemoPutDownBox"] = tk.Button(self.root, text="DemoPutDownBox", padx=5,
                        command=self.DemoPutDownBox, state="disabled")
-        self.button_DemoPutDownBox.grid(row=row,column=4,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["DemoPutDownBox"].grid(row=row,column=4,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_DisconnectMQTT = \
-            tk.Button(self.root, text="DisconnectMQTT", padx=5,
+        self.button["DisconnectMQTT"] = tk.Button(self.root, text="DisconnectMQTT", padx=5,
                        command=self.DisconnectMQTT, state="disabled")
-        # self.button_DisconnectMQTT.grid(row=row,column=4,padx=2,pady=2,sticky="ew", columnspan=2)
+        # self.button["DisconnectMQTT"].grid(row=row,column=4,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_ToolChange = \
-            tk.Button(self.root, text="ToolChange", padx=5,
+        self.button["ToolChange"] = tk.Button(self.root, text="ToolChange", padx=5,
                       command=self.ToolChange, state="disabled")
-        self.button_ToolChange.grid(
+        self.button["ToolChange"].grid(
             row=row,column=6,padx=2,pady=2,sticky="ew", columnspan=2)
 
         self.frame_is_emergency_stopped = tk.Frame(self.root)
@@ -176,25 +172,21 @@ class MQTTWin:
 
         row += 1
 
-        self.button_EnableRobot = \
-            tk.Button(self.root, text="EnableRobot", padx=5,
+        self.button["EnableRobot"] = tk.Button(self.root, text="EnableRobot", padx=5,
                       command=self.EnableRobot, state="disabled")
-        self.button_EnableRobot.grid(row=row,column=0,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["EnableRobot"].grid(row=row,column=0,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_DisableRobot = \
-            tk.Button(self.root, text="DisableRobot", padx=5,
+        self.button["DisableRobot"] = tk.Button(self.root, text="DisableRobot", padx=5,
                       command=self.DisableRobot, state="disabled")
-        self.button_DisableRobot.grid(row=row,column=2,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["DisableRobot"].grid(row=row,column=2,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_ReleaseHand = \
-            tk.Button(self.root, text="ReleaseHand", padx=5,
+        self.button["ReleaseHand"] = tk.Button(self.root, text="ReleaseHand", padx=5,
                       command=self.ReleaseHand, state="disabled")
-        self.button_ReleaseHand.grid(row=row,column=4,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["ReleaseHand"].grid(row=row,column=4,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_LineCut = \
-            tk.Button(self.root, text="LineCut", padx=5,
+        self.button["LineCut"] = tk.Button(self.root, text="LineCut", padx=5,
                       command=self.LineCut, state="disabled")
-        self.button_LineCut.grid(row=row,column=6,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["LineCut"].grid(row=row,column=6,padx=2,pady=2,sticky="ew", columnspan=2)
 
         self.frame_enabled = tk.Frame(self.root)
         self.frame_enabled.grid(row=row,column=8,padx=2,pady=2,sticky="w", columnspan=2)
@@ -209,20 +201,17 @@ class MQTTWin:
 
         row += 1
 
-        self.button_SetAreaEnabled = \
-            tk.Button(self.root, text="SetAreaEnabled", padx=5,
+        self.button["SetAreaEnabled"] = tk.Button(self.root, text="SetAreaEnabled", padx=5,
                       command=self.SetArea, state="disabled")
-        self.button_SetAreaEnabled.grid(row=row,column=0,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["SetAreaEnabled"].grid(row=row,column=0,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_TidyPose = \
-            tk.Button(self.root, text="TidyPose", padx=5,
+        self.button["TidyPose"] = tk.Button(self.root, text="TidyPose", padx=5,
                       command=self.TidyPose, state="disabled")
-        self.button_TidyPose.grid(row=row,column=2,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["TidyPose"].grid(row=row,column=2,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_ClearError = \
-            tk.Button(self.root, text="ClearError", padx=5,
+        self.button["ClearError"] = tk.Button(self.root, text="ClearError", padx=5,
                       command=self.ClearError, state="disabled")
-        self.button_ClearError.grid(row=row,column=4,padx=2,pady=2,sticky="ew", columnspan=2)
+        self.button["ClearError"].grid(row=row,column=4,padx=2,pady=2,sticky="ew", columnspan=2)
 
         self.frame_error = tk.Frame(self.root)
         self.frame_error.grid(row=row,column=8,padx=2,pady=2,sticky="w", columnspan=2)
@@ -237,22 +226,19 @@ class MQTTWin:
 
         row += 1
 
-        self.button_StartMQTTControl = \
-            tk.Button(self.root, text="StartMQTTControl", padx=5,
+        self.button["StartMQTTControl"] = tk.Button(self.root, text="StartMQTTControl", padx=5,
                       command=self.StartMQTTControl, state="disabled")
-        self.button_StartMQTTControl.grid(
+        self.button["StartMQTTControl"].grid(
             row=row,column=0,padx=2,pady=2,sticky="ew", columnspan=2)
         
-        self.button_StopMQTTControl = \
-            tk.Button(self.root, text="StopMQTTControl", padx=5,
+        self.button["StopMQTTControl"] = tk.Button(self.root, text="StopMQTTControl", padx=5,
                       command=self.StopMQTTControl, state="disabled")
-        self.button_StopMQTTControl.grid(
+        self.button["StopMQTTControl"].grid(
             row=row,column=2,padx=2,pady=2,sticky="ew", columnspan=2)
 
-        self.button_ChangeLogFile = \
-            tk.Button(self.root, text="ChangeLogFile", padx=5,
+        self.button["ChangeLogFile"] = tk.Button(self.root, text="ChangeLogFile", padx=5,
                     command=self.ChangeLogFile, state="disabled")
-        self.button_ChangeLogFile.grid(
+        self.button["ChangeLogFile"].grid(
             row=row,column=4,padx=2,pady=2,sticky="ew", columnspan=2)        
 
         self.frame_mqtt_control = tk.Frame(self.root)
@@ -333,7 +319,7 @@ class MQTTWin:
             {"elapsed": 0, "step": 0.1, "interval": 100},
             {"elapsed": 1, "step": 1, "interval": 250},
         ]
-        self.joint_jog_buttons = {}
+        self.button["joint_jog"] = {}
         for i, joint in enumerate(joint_names):
             frame = tk.Frame(self.root)
             frame.grid(row=row, column=2+i, padx=2, pady=2, sticky="ew")
@@ -344,7 +330,7 @@ class MQTTWin:
             btn_plus = AccelerateButton(frame, self.jog_joint_accel, (i, 1),
                                          accelerate_settings=joint_accelerate_settings, text="+", width=1, state="disabled")
             btn_plus.pack(side="left", expand=True, fill="x")
-            self.joint_jog_buttons[joint] = {"minus": btn_minus, "plus": btn_plus}
+            self.button["joint_jog"][joint] = {"minus": btn_minus, "plus": btn_plus}
         # TCP Jog
         row += 1
         tk.Label(self.root, text="TCP Jog").grid(row=row, column=0, padx=2, pady=2, sticky="w")
@@ -354,7 +340,7 @@ class MQTTWin:
             {"elapsed": 1, "step": 1, "interval": 250},
             {"elapsed": 2, "step": 10, "interval": 500},
         ]
-        self.tcp_jog_buttons = {}
+        self.button["tcp_jog"] = {}
         for i, tcp in enumerate(tcp_names):
             frame = tk.Frame(self.root)
             frame.grid(row=row, column=2+i, padx=2, pady=2, sticky="ew")
@@ -365,7 +351,7 @@ class MQTTWin:
             btn_plus = AccelerateButton(frame, self.jog_tcp_accel, (i, 1),
                                          accelerate_settings=tcp_accelerate_settings, text="+", width=1, state="disabled")
             btn_plus.pack(side="left", expand=True, fill="x")
-            self.tcp_jog_buttons[tcp] = {"minus": btn_minus, "plus": btn_plus}
+            self.button["tcp_jog"][tcp] = {"minus": btn_minus, "plus": btn_plus}
         row += 1
 
         tk.Label(self.root, text="State").grid(
@@ -597,54 +583,92 @@ class MQTTWin:
         self.pm.startMonitor(logging_dir=self.logging_dir)
         if self.use_joint_monitor_plot:
             self.pm.startMonitorGUI()
-        self.button_ConnectRobot.config(state="disabled")
-        self.button_ClearError.config(state="normal")
-        self.button_SetAreaEnabled.config(state="normal")
-        self.button_DisableRobot.config(state="normal")
-        self.button_EnableRobot.config(state="normal")
-        self.button_ReleaseHand.config(state="normal")
-        self.button_TidyPose.config(state="normal")
-        self.button_ToolChange.config(state="normal")
-        self.button_ChangeLogFile.config(state="normal")
-        self.button_DemoPutDownBox.config(state="normal")
-        self.button_LineCut.config(state="normal")
-        for joint in self.joint_jog_buttons:
-            self.joint_jog_buttons[joint]["minus"].config(state="normal")
-            self.joint_jog_buttons[joint]["plus"].config(state="normal")
-        for tcp in self.tcp_jog_buttons:
-            self.tcp_jog_buttons[tcp]["minus"].config(state="normal")
-            self.tcp_jog_buttons[tcp]["plus"].config(state="normal")
+        self.button["ConnectRobot"].config(state="disabled")
+        self.button["ClearError"].config(state="normal")
+        self.button["SetAreaEnabled"].config(state="normal")
+        self.button["DisableRobot"].config(state="normal")
+        self.button["EnableRobot"].config(state="normal")
+        self.button["ReleaseHand"].config(state="normal")
+        self.button["TidyPose"].config(state="normal")
+        self.button["ToolChange"].config(state="normal")
+        self.button["ChangeLogFile"].config(state="normal")
+        self.button["DemoPutDownBox"].config(state="normal")
+        self.button["LineCut"].config(state="normal")
+        for joint in self.button["joint_jog"]:
+            self.button["joint_jog"][joint]["minus"].config(state="normal")
+            self.button["joint_jog"][joint]["plus"].config(state="normal")
+        for tcp in self.button["tcp_jog"]:
+            self.button["tcp_jog"][tcp]["minus"].config(state="normal")
+            self.button["tcp_jog"][tcp]["plus"].config(state="normal")
         if self.pm.state_recv_mqtt:
-            self.button_StartMQTTControl.config(state="normal")
-            self.button_StopMQTTControl.config(state="normal")
+            self.button["StartMQTTControl"].config(state="normal")
+            self.button["StopMQTTControl"].config(state="normal")
 
     def ConnectMQTT(self):
         if self.pm.state_recv_mqtt:
             return
         self.pm.startRecvMQTT()
-        self.button_ConnectMQTT.config(state="disabled")
-        self.button_DisconnectMQTT.config(state="normal")
-
-        
-        self.button_ClearError.config(state="normal")
-        self.button_SetAreaEnabled.config(state="normal")
-        self.button_DisableRobot.config(state="normal")
-        self.button_EnableRobot.config(state="normal")
-        self.button_ReleaseHand.config(state="normal")
-        self.button_TidyPose.config(state="normal")
+        self.button["ConnectMQTT"].config(state="disabled")
+        self.button["DisconnectMQTT"].config(state="normal")
+        self.button["ClearError"].config(state="normal")
+        self.button["SetAreaEnabled"].config(state="normal")
+        self.button["DisableRobot"].config(state="normal")
+        self.button["EnableRobot"].config(state="normal")
+        self.button["ReleaseHand"].config(state="normal")
+        self.button["TidyPose"].config(state="normal")
         if self.pm.state_control and self.pm.state_monitor:
-            self.button_StartMQTTControl.config(state="normal")
-            self.button_StopMQTTControl.config(state="normal")
+            self.button["StartMQTTControl"].config(state="normal")
+            self.button["StopMQTTControl"].config(state="normal")
+
+    def temporarily_disable_button(self):
+        self.disable_keys = []
+        # ボタンを一時的に無効化
+        for key in self.button:
+            if isinstance(self.button[key], dict):
+                for axis in self.button[key]:
+                    for polarity in self.button[key][axis]:
+                        state = self.button[key][axis][polarity].cget("state")
+                        if state == "normal":
+                            self.disable_keys.append((key, axis, polarity))
+                            self.button[key][axis][polarity].config(
+                                state="disabled")
+            else:
+                state = self.button[key].cget("state")
+                if state == "normal":
+                    self.disable_keys.append(key)
+                    self.button[key].config(state="disabled")
+        self.root.update_idletasks()
+
+    def recover_temporarily_disable_button(self):
+        # 元の状態に復元
+        for key in self.disable_keys:
+            if isinstance(key, tuple):
+                self.button[key[0]][key[1]][key[2]].config(state="normal")
+            else:
+                self.button[key].config(state="normal")
+
+    def _exclusive_button_action(self, action):
+        # ボタンを一時的に無効化して、actionを別スレッドで実行し、
+        # action終了後にボタンを元の状態に戻す
+        # action終了が重要な場合はactionは同期処理である必要がある
+        # またactionすなわちサブスレッドで
+        # プロセスを作成することは予期せぬ問題の原因になることがあるとのことなので非推奨
+        self.temporarily_disable_button()
+        def _target():
+            action()
+            # GUI処理はメインスレッドに呼び出す
+            self.root.after(0, self.recover_temporarily_disable_button)
+        threading.Thread(target=_target).start()
 
     def EnableRobot(self):
         if not self.pm.state_control:
             return
-        self.pm.enable()
+        self._exclusive_button_action(self.pm.enable)
 
     def DisableRobot(self):
         if not self.pm.state_control:
             return
-        self.pm.disable()
+        self._exclusive_button_action(self.pm.disable)
 
     def SetArea(self):
         if not self.pm.state_control:
@@ -653,41 +677,41 @@ class MQTTWin:
         enabled = popup.result
         if enabled is None:
             return
-        self.pm.set_area_enabled(enabled)
+        self._exclusive_button_action(lambda: self.pm.set_area_enabled(enabled))
 
     def TidyPose(self):
         if not self.pm.state_control:
             return
-        self.pm.tidy_pose()
+        self._exclusive_button_action(self.pm.tidy_pose)
 
     def ClearError(self):
         if not self.pm.state_control:
             return
-        self.pm.clear_error()
+        self._exclusive_button_action(self.pm.clear_error)
 
     def StartMQTTControl(self):
         if ((not self.pm.state_control) or
             (not self.pm.state_monitor) or
             (not self.pm.state_recv_mqtt)):
             return
-        self.pm.start_mqtt_control()
+        self._exclusive_button_action(self.pm.start_mqtt_control)
 
     def StopMQTTControl(self):
         if ((not self.pm.state_control) or
             (not self.pm.state_monitor) or
             (not self.pm.state_recv_mqtt)):
             return
-        self.pm.stop_mqtt_control()
+        self._exclusive_button_action( self.pm.stop_mqtt_control)
 
     def ReleaseHand(self):
         if not self.pm.state_control:
             return
-        self.pm.release_hand()
+        self._exclusive_button_action(self.pm.release_hand)
     
     def LineCut(self):
         if not self.pm.state_control:
             return
-        self.pm.line_cut()
+        self._exclusive_button_action(self.pm.line_cut)
 
     def ToolChange(self):
         if not self.pm.state_control:
@@ -696,7 +720,7 @@ class MQTTWin:
         tool_id = popup.result
         if tool_id is None:
             return
-        self.pm.tool_change(tool_id)
+        self._exclusive_button_action(lambda: self.pm.tool_change(tool_id))
 
     def jog_joint(self, joint, direction):
         if not self.pm.state_control:
@@ -719,8 +743,8 @@ class MQTTWin:
     def DemoPutDownBox(self):
         if not self.pm.state_control:
             return
-        self.pm.demo_put_down_box()
-        
+        self._exclusive_button_action(self.pm.demo_put_down_box)
+
     def DisconnectMQTT(self):
         print("Disconnect MQTT!!")
 
@@ -759,7 +783,7 @@ class MQTTWin:
     def update_button_states_from_mqtt_control(self):
         # MQTT制御に入れる状態にならなければチェックしない
         if not self.pm.state_control or not self.pm.state_monitor:
-            self.root.after(100, self.update_button_states_from_mqtt_control)
+            self.root.after(1000, self.update_button_states_from_mqtt_control)
         # MQTT制御に入れる状態であれば、MQTT制御状態に応じてボタンの有効無効を切り替える
         last_state_mqtt_control = getattr(
             self, "last_state_mqtt_control", False)
@@ -768,29 +792,26 @@ class MQTTWin:
         if state_mqtt_control != last_state_mqtt_control:
             kind1 = "disabled" if state_mqtt_control else "normal"
             kind2 = "normal" if state_mqtt_control else "disabled"
-            self.button_StartMQTTControl.config(state=kind1)
-            self.button_StopMQTTControl.config(state=kind2)
-            self.button_ClearError.config(state=kind1)
-            self.button_SetAreaEnabled.config(state=kind1)
-            self.button_DisableRobot.config(state=kind1)
-            self.button_EnableRobot.config(state=kind1)
-            self.button_ReleaseHand.config(state=kind1)
-            self.button_TidyPose.config(state=kind1)
-            self.button_ToolChange.config(state=kind1)
-            self.button_ChangeLogFile.config(state=kind1)
-            self.button_DemoPutDownBox.config(state=kind1)
-            self.button_LineCut.config(state=kind1)
-            for joint in self.joint_jog_buttons:
-                self.joint_jog_buttons[joint]["minus"].config(state=kind1)
-                self.joint_jog_buttons[joint]["plus"].config(state=kind1)
-            for tcp in self.tcp_jog_buttons:
-                self.tcp_jog_buttons[tcp]["minus"].config(state=kind1)
-                self.tcp_jog_buttons[tcp]["plus"].config(state=kind1)
-            if self.pm.state_recv_mqtt:
-                self.button_StartMQTTControl.config(state=kind1)
-                self.button_StopMQTTControl.config(state=kind1)
+            self.button["StartMQTTControl"].config(state=kind1)
+            self.button["StopMQTTControl"].config(state=kind2)
+            self.button["ClearError"].config(state=kind1)
+            self.button["SetAreaEnabled"].config(state=kind1)
+            self.button["DisableRobot"].config(state=kind1)
+            self.button["EnableRobot"].config(state=kind1)
+            self.button["ReleaseHand"].config(state=kind1)
+            self.button["TidyPose"].config(state=kind1)
+            self.button["ToolChange"].config(state=kind1)
+            self.button["ChangeLogFile"].config(state=kind1)
+            self.button["DemoPutDownBox"].config(state=kind1)
+            self.button["LineCut"].config(state=kind1)
+            for joint in self.button["joint_jog"]:
+                self.button["joint_jog"][joint]["minus"].config(state=kind1)
+                self.button["joint_jog"][joint]["plus"].config(state=kind1)
+            for tcp in self.button["tcp_jog"]:
+                self.button["tcp_jog"][tcp]["minus"].config(state=kind1)
+                self.button["tcp_jog"][tcp]["plus"].config(state=kind1)
             self.last_state_mqtt_control = state_mqtt_control
-        self.root.after(100, self.update_button_states_from_mqtt_control)
+        self.root.after(1000, self.update_button_states_from_mqtt_control)
 
     def update_monitor(self):
         # モニタープロセスからの情報
