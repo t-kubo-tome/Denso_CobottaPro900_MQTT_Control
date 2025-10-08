@@ -333,17 +333,18 @@ class MQTTWin:
             {"elapsed": 0, "step": 0.1, "interval": 100},
             {"elapsed": 1, "step": 1, "interval": 250},
         ]
+        self.joint_jog_buttons = {}
         for i, joint in enumerate(joint_names):
             frame = tk.Frame(self.root)
             frame.grid(row=row, column=2+i, padx=2, pady=2, sticky="ew")
             tk.Label(frame, text=joint, width=2, anchor="e").pack(side="left", padx=10)
             btn_minus = AccelerateButton(frame, self.jog_joint_accel, (i, -1), 
-                                         accelerate_settings=joint_accelerate_settings, text="-", width=1)
+                                         accelerate_settings=joint_accelerate_settings, text="-", width=1, state="disabled")
             btn_minus.pack(side="left", expand=True, fill="x")
             btn_plus = AccelerateButton(frame, self.jog_joint_accel, (i, 1),
-                                         accelerate_settings=joint_accelerate_settings, text="+", width=1)
+                                         accelerate_settings=joint_accelerate_settings, text="+", width=1, state="disabled")
             btn_plus.pack(side="left", expand=True, fill="x")
-
+            self.joint_jog_buttons[joint] = {"minus": btn_minus, "plus": btn_plus}
         # TCP Jog
         row += 1
         tk.Label(self.root, text="TCP Jog").grid(row=row, column=0, padx=2, pady=2, sticky="w")
@@ -353,17 +354,18 @@ class MQTTWin:
             {"elapsed": 1, "step": 1, "interval": 250},
             {"elapsed": 2, "step": 10, "interval": 500},
         ]
+        self.tcp_jog_buttons = {}
         for i, tcp in enumerate(tcp_names):
             frame = tk.Frame(self.root)
             frame.grid(row=row, column=2+i, padx=2, pady=2, sticky="ew")
             tk.Label(frame, text=tcp, width=2, anchor="e").pack(side="left", padx=10)
             btn_minus = AccelerateButton(frame, self.jog_tcp_accel, (i, -1),
-                                         accelerate_settings=tcp_accelerate_settings, text="-", width=1)
+                                         accelerate_settings=tcp_accelerate_settings, text="-", width=1, state="disabled")
             btn_minus.pack(side="left", expand=True, fill="x")
             btn_plus = AccelerateButton(frame, self.jog_tcp_accel, (i, 1),
-                                         accelerate_settings=tcp_accelerate_settings, text="+", width=1)
+                                         accelerate_settings=tcp_accelerate_settings, text="+", width=1, state="disabled")
             btn_plus.pack(side="left", expand=True, fill="x")
-
+            self.tcp_jog_buttons[tcp] = {"minus": btn_minus, "plus": btn_plus}
         row += 1
 
         tk.Label(self.root, text="State").grid(
@@ -605,6 +607,12 @@ class MQTTWin:
         self.button_ChangeLogFile.config(state="normal")
         self.button_DemoPutDownBox.config(state="normal")
         self.button_LineCut.config(state="normal")
+        for joint in self.joint_jog_buttons:
+            self.joint_jog_buttons[joint]["minus"].config(state="normal")
+            self.joint_jog_buttons[joint]["plus"].config(state="normal")
+        for tcp in self.tcp_jog_buttons:
+            self.tcp_jog_buttons[tcp]["minus"].config(state="normal")
+            self.tcp_jog_buttons[tcp]["plus"].config(state="normal")
         if self.pm.state_recv_mqtt:
             self.button_StartMQTTControl.config(state="normal")
             self.button_StopMQTTControl.config(state="normal")
