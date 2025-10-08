@@ -376,28 +376,28 @@ class ProcessManager:
         self.main_to_monitor_pipe.send(command)
 
     def enable(self):
-        self._send_command_to_control({"command": "enable"})
+        self._send_command_to_control({"command": "enable", "wait": True})
 
     def disable(self):
-        self._send_command_to_control({"command": "disable"})
+        self._send_command_to_control({"command": "disable", "wait": True})
 
     def set_area_enabled(self, enable: bool):
-        self._send_command_to_control({"command": "set_area_enabled", "params": {"enable": enable}})
+        self._send_command_to_control({"command": "set_area_enabled", "params": {"enable": enable}, "wait": True})
 
     def tidy_pose(self):
-        self._send_command_to_control({"command": "tidy_pose"})
+        self._send_command_to_control({"command": "tidy_pose", "wait": True})
 
     def clear_error(self):
-        self._send_command_to_control({"command": "clear_error"})
+        self._send_command_to_control({"command": "clear_error", "wait": True})
 
     def release_hand(self):
-        self._send_command_to_control({"command": "release_hand"})
+        self._send_command_to_control({"command": "release_hand", "wait": True})
 
     def line_cut(self):
-        self._send_command_to_control({"command": "line_cut"})
+        self._send_command_to_control({"command": "line_cut", "wait": True})
 
     def start_mqtt_control(self):
-        self._send_command_to_control({"command": "start_mqtt_control"})
+        self._send_command_to_control({"command": "start_mqtt_control", "wait": False})
 
     def stop_mqtt_control(self):
         # mqtt_control中のみシグナルを出す
@@ -406,19 +406,19 @@ class ProcessManager:
 
     def tool_change(self, tool_id: int):
         self.ar[17] = tool_id
-        self._send_command_to_control({"command": "tool_change"})
+        self._send_command_to_control({"command": "tool_change", "wait": True})
 
     def jog_joint(self, joint, direction):
-        self._send_command_to_control({"command": "jog_joint", "params": {"joint": joint, "direction": direction}})
+        self._send_command_to_control({"command": "jog_joint", "params": {"joint": joint, "direction": direction}, "wait": False})
 
     def jog_tcp(self, axis, direction):
-        self._send_command_to_control({"command": "jog_tcp", "params": {"axis": axis, "direction": direction}})
+        self._send_command_to_control({"command": "jog_tcp", "params": {"axis": axis, "direction": direction}, "wait": False})
 
     def move_joint(self, joints: list[float], wait: bool = False):
         self._send_command_to_control({"command": "move_joint", "params": {"joints": joints}, "wait": wait})
 
     def demo_put_down_box(self):
-        self._send_command_to_control({"command": "demo_put_down_box"})
+        self._send_command_to_control({"command": "demo_put_down_box", "wait": True})
 
     def get_current_monitor_log(self):
         with self.monitor_lock:
@@ -436,7 +436,7 @@ class ProcessManager:
         self._send_command_to_monitor({"command": "change_log_file", "params": {"logging_dir": logging_dir}})
         # 制御プロセス
         self.ar[33] = 1
-        self._send_command_to_control({"command": "change_log_file", "params": {"logging_dir": logging_dir}})
+        self._send_command_to_control({"command": "change_log_file", "params": {"logging_dir": logging_dir}, "wait": True})
         # 制御プロセスはMQTTControl時は一旦停止させる
         self.stop_mqtt_control()
         # 制御記録用プロセス

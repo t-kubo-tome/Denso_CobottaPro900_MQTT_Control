@@ -1783,10 +1783,7 @@ class Cobotta_Pro_CON:
                     self.jog_tcp(**command["params"])
                 elif command["command"] == "move_joint":
                     self.logger.info("Move joint not during MQTT control")
-                    wait = command.get("wait", False)
                     self.move_joint(**command["params"])
-                    if wait:
-                        control_pipe.send({"status": True})
                 elif command["command"] == "demo_put_down_box":
                     self.logger.info("Demo put down box not during MQTT control")
                     self.demo_put_down_box()
@@ -1797,6 +1794,9 @@ class Cobotta_Pro_CON:
                 else:
                     self.logger.warning(
                         f"Unknown command: {command['command']}")
+                wait = command.get("wait", False)
+                if wait:
+                    control_pipe.send({"status": True})
             if self.pose[32] == 1:
                 self.sm.close()
                 self.control_to_archiver_queue.close()
