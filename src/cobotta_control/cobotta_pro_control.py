@@ -293,6 +293,7 @@ class Cobotta_Pro_CON:
 
     def control_loop(self, f: TextIO | None = None) -> bool:
         """リアルタイム制御ループ"""
+        self.enter_servo_mode()
         self.last = 0
         self.logger.info("Start Control Loop")
         # 状態値が最新の値になるようにする
@@ -751,7 +752,10 @@ class Cobotta_Pro_CON:
                 
             self.last_control = control
             self.last = now
-        
+ 
+        # スレーブモード解除可能な状態になったら即時に解除しないと指令値生成遅延になる
+        self.leave_servo_mode()       
+ 
         hand_thread.join()
         if error_event.is_set():
             # TODO: これで例外発生元のスタックトレースが取得できればこれで十分
@@ -853,9 +857,7 @@ class Cobotta_Pro_CON:
             try:
                 # 制御ループ
                 # 停止するのは、ユーザーが要求した場合か、自然に内部エラーが発生した場合
-                self.enter_servo_mode()
                 self.control_loop()
-                self.leave_servo_mode()
                 # ここまで正常に終了した場合、ユーザーが要求した場合が成功を意味する
                 if self.pose[16] == 1:
                     self.pose[16] = 0
@@ -1169,16 +1171,9 @@ class Cobotta_Pro_CON:
         self.robot.SetAreaEnabled(0, True)
         self.pose[31] = 1
         if next_tool_info["id"] == 4:
-            # tool_baseから箱の手前まで直接行くと台にぶつかりそうなので少し手前に移動
-            # pose = [-302.96, -400.32, 831.60, -46.90, 88.37, -136.46]
-            # jointで移動したほうが特異点を経由しないので止まりにくい
+            # 箱の前だがやや離れた、VRでも到達可能な姿勢
             self.robot.move_joint(
-                [-123.41, -2.78, 60.32, -127.61, -44.68, 136.85]
-            )
-            # 箱の手前に移動
-            # pose = [-302.92, -560.30, 830.96, -49.35, 88.43, -138.85]
-            self.robot.move_joint(
-                [-110.01, 11.00, 48.76, -142.45, -35.12, 147.03]
+                [-157.55, -18.18, 116.61, 95.29, 67.08, -99.31]
             )
         else:
             # ツールチェンジ後に実機をVRに合わせる場合
@@ -1194,6 +1189,7 @@ class Cobotta_Pro_CON:
             next_tool_id = self.pose[17]
             if next_tool_id != 0:
                 try:
+                    self.logger.info(f"Tool change to: {next_tool_id}")
                     self.tool_change(next_tool_id)
                     self.pose[18] = 1
                 except Exception as e:
@@ -1238,13 +1234,20 @@ class Cobotta_Pro_CON:
                 # 手動またはTCP制御で移動しようとすると、関節2より関節3が先に動き、
                 # ひじ特異姿勢に近くなるため、このようにしている
 
-                # ホルダーへのツールチェンジ後の箱の少し手前の位置
-                # ツールチェンジで移動済みだがもう一度同じ場所にいることを保証させる
+                # ホルダーへのツールチェンジ後の、VRと同期可能な肘を下げた姿勢から、
+                # VRと同期不可能な肘を上げた姿勢に、箱から離れた位置で移動する
+                # pose = [-302.96, -400.32, 831.60, -46.90, 88.37, -136.46]
+                self.robot.move_joint(
+                    [-123.41, -2.78, 60.32, -127.61, -44.68, 136.85]
+                )
+
+                # 軌跡を直線的に保つため段階に分けて関節制御のまま箱に近づける
                 # pose = [-302.92, -560.30, 830.96, -49.35, 88.43, -138.85]
                 self.robot.move_joint(
                     [-110.01, 11.00, 48.76, -142.45, -35.12, 147.03]
                 )
 
+                # 軌跡を直線的に保つため段階に分けて関節制御のまま箱にさらに近づける
                 # ここから箱の位置へと自動で移動する
                 # TCP制御 (これではひじ特異姿勢に近くなる)
                 # self.robot.move_pose(
@@ -1347,8 +1350,9 @@ class Cobotta_Pro_CON:
             )
             # ほぼ同じツール姿勢だが、VRのIKで解いた場合の関節角度に
             # 合わせる (箱下ろし完了後のVR手動操作で合わせるとユーザーが驚くため)
+            # 制限値から遠い姿勢にする
             self.robot.move_joint(
-                [-195.75, -7.50, 96.01, -0.89, 74.52, 248.67]
+                [-195.56, -1.43, 89.37, -0.53, 91.64, 249.77 - 360]
             )
             # NOTE: より良い方法がないか
             # VRアニメーションがロボットの動きに追従し終わるのを待つ
@@ -1606,15 +1610,17 @@ class Cobotta_Pro_CON:
 
         ## パラメータ
         # 箱の長さ
-        box_length_c4c1 = 285
-        box_length_c1c2 = 285
+        # 天然水のダンボール用に更新
+        box_length_c4c1 = 315
+        box_length_c1c2 = 312
         # カッターは箱の長さよりも先に進む必要があるため、その長さ
         buffer_length = 115
         # c4から位置を決める場合
         # 最初のカットを行う角における関節角度。角とアーム先端の中心位置は高さを除き
         # ぴったり合わせておく
         # 長軸方向の位置は力制御では検出できないので座標で合わせるしかない
-        c4_true = [359.95, 137.72, 156.89, -180.0, 0.0, 270.0]
+        # c4_true = [359.95, 137.72, 156.89, -180.0, 0.0, 270.0]
+        c4_true = [346.89, 143.87, 106.61, -180.0, 0.0, -90]
         # c1, c2, c3, c4の近くで、箱の外側に位置する点
         # ここからカットする辺に向かって力制御で接触させる
         c1_near_offset = np.array([0, -5, 10, 0, 0, 0]).tolist()
@@ -1777,10 +1783,7 @@ class Cobotta_Pro_CON:
                     self.jog_tcp(**command["params"])
                 elif command["command"] == "move_joint":
                     self.logger.info("Move joint not during MQTT control")
-                    wait = command.get("wait", False)
                     self.move_joint(**command["params"])
-                    if wait:
-                        control_pipe.send({"status": True})
                 elif command["command"] == "demo_put_down_box":
                     self.logger.info("Demo put down box not during MQTT control")
                     self.demo_put_down_box()
@@ -1791,6 +1794,9 @@ class Cobotta_Pro_CON:
                 else:
                     self.logger.warning(
                         f"Unknown command: {command['command']}")
+                wait = command.get("wait", False)
+                if wait:
+                    control_pipe.send({"status": True})
             if self.pose[32] == 1:
                 self.sm.close()
                 self.control_to_archiver_queue.close()
