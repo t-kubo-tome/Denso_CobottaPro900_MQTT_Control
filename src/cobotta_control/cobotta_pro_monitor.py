@@ -172,7 +172,7 @@ class Cobotta_Pro_MON:
                     is_in_tool_change = True
                     self.logger.info("Tool change started")
             else:
-                if is_in_tool_change:
+                if self.pose[41] == 1 and is_in_tool_change:
                     is_in_tool_change = False
                     status_tool_change = bool(self.pose[18] == 1)
                     self.logger.info("Tool change finished")
@@ -199,7 +199,7 @@ class Cobotta_Pro_MON:
                 if not is_put_down_box:
                     is_put_down_box = True
             else:
-                if is_put_down_box:
+                if self.pose[41] == 1 and is_put_down_box:
                     is_put_down_box = False
                     status_put_down_box = bool(self.pose[22] == 1)
             # 終了した場合のみキーを追加
@@ -213,7 +213,7 @@ class Cobotta_Pro_MON:
                 if not line_cut:
                     line_cut = True
             else:
-                if line_cut:
+                if self.pose[41] == 1 and line_cut:
                     line_cut = False
                     status_line_cut = bool(self.pose[39] == 1)
             # 終了した場合のみキーを追加

@@ -362,6 +362,9 @@ class Cobotta_Pro_CON:
                     break
                 continue
 
+            # ツールチェンジなど後の制御可能フラグ
+            self.pose[41] = 1
+
             # 目標値を取得しているかを確認
             if self.pose[20] != 1:
                 time.sleep(t_intv)
@@ -827,7 +830,10 @@ class Cobotta_Pro_CON:
  
         # スレーブモード解除可能な状態になったら即時に解除しないと指令値生成遅延になる
         self.leave_servo_mode()       
- 
+
+         # ツールチェンジなど後の制御可能フラグ
+        self.pose[41] = 0
+
         hand_thread.join()
         if error_event.is_set():
             # TODO: これで例外発生元のスタックトレースが取得できればこれで十分
@@ -1262,6 +1268,7 @@ class Cobotta_Pro_CON:
             if next_tool_id != 0:
                 try:
                     self.logger.info(f"Tool change to: {next_tool_id}")
+                    self.pose[41] = 0
                     self.tool_change(next_tool_id)
                     self.pose[18] = 1
                 except Exception as e:
@@ -1270,6 +1277,7 @@ class Cobotta_Pro_CON:
                     self.pose[18] = 2
                 finally:
                     self.pose[17] = 0
+                    self.pose[41] = 1
                     break
 
     def jog_joint(self, joint: int, direction: float) -> None:
