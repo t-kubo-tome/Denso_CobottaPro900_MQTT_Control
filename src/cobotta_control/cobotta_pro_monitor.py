@@ -224,7 +224,7 @@ class Cobotta_Pro_MON:
             try:
                 actual_tcp_pose = self.robot.get_current_pose()
             except Exception as e:
-                self.logger.error("Error in get_current_pose: ")
+                self.logger.error("Error in get_current_pose (maybe non-critical): ")
                 self.logger.error(f"{self.robot.format_error_wo_desc(e)}")
                 self.reconnect_after_timeout(e)
                 actual_tcp_pose = None
@@ -232,7 +232,7 @@ class Cobotta_Pro_MON:
             try:
                 actual_joint = self.robot.get_current_joint()
             except Exception as e:
-                self.logger.error("Error in get_current_joint: ")
+                self.logger.error("Error in get_current_joint (maybe non-critical): ")
                 self.logger.error(f"{self.robot.format_error_wo_desc(e)}")
                 self.reconnect_after_timeout(e)
                 actual_joint = None
@@ -259,7 +259,7 @@ class Cobotta_Pro_MON:
             try:
                 forces = self.robot.ForceValue()
             except Exception as e:
-                self.logger.error("Error in ForceValue: ")
+                self.logger.error("Error in ForceValue (maybe non-critical): ")
                 self.logger.error(f"{self.robot.format_error_wo_desc(e)}")
                 self.reconnect_after_timeout(e)
                 forces = None
@@ -290,9 +290,7 @@ class Cobotta_Pro_MON:
             try:
                 enabled = self.robot.is_enabled()
             except Exception as e:
-                self.logger.warning(
-                    "Somehow failed in checking if robot is enabled. "
-                    "Enabled value may be incorrect.")
+                self.logger.warning("Error in is_enabled (maybe non-critical): ")
                 self.logger.warning(f"{self.robot.format_error_wo_desc(e)}")
                 self.reconnect_after_timeout(e)
                 enabled = False
@@ -303,9 +301,7 @@ class Cobotta_Pro_MON:
             try:
                 is_in_servo_mode = self.robot.is_in_servo_mode()
             except Exception as e:
-                self.logger.warning(
-                    "Somehow failed in checking if robot is in servo mode. "
-                    "Enabled value may be incorrect.")
+                self.logger.warning("Error in is_in_servo_mode (maybe non-critical): ")
                 self.logger.warning(f"{self.robot.format_error_wo_desc(e)}")
                 self.reconnect_after_timeout(e)
             # 切り替わるときにログを出す
@@ -329,7 +325,7 @@ class Cobotta_Pro_MON:
                     try:
                         errors = self.robot.get_cur_error_info_all()
                     except Exception as e:
-                        self.logger.error("Error in get_cur_error_info_all: ")
+                        self.logger.error("Error in get_cur_error_info_all (maybe non-critical): ")
                         self.logger.error(f"{self.robot.format_error(e)}")
                         self.reconnect_after_timeout(e)
                         errors = []
@@ -345,9 +341,7 @@ class Cobotta_Pro_MON:
                     try:
                         is_emergency_stopped = self.robot.is_emergency_stopped()
                     except Exception as e:
-                        self.logger.warning(
-                            "Somehow failed in checking if robot is emergency stopped."
-                            "Thus value may be incorrect.")
+                        self.logger.warning("Error in is_emergency_stopped (maybe non-critical): ")
                         self.logger.warning(f"{self.robot.format_error_wo_desc(e)}")
                         self.reconnect_after_timeout(e)
             # 切り替わるときにログを出す
